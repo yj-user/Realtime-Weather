@@ -7,18 +7,19 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController,UITextFieldDelegate {
-
+class WeatherViewController: UIViewController {
+    
     @IBOutlet var conditionImageView: UIImageView!
     @IBOutlet var temperatureLabel: UILabel!
     @IBOutlet var cityLabel: UILabel!
     @IBOutlet var myTextField: UITextField!
     
-    let weatherManager = WeatherManager()
+    var weatherManager = WeatherManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        weatherManager.delegate = self
         myTextField.delegate = self
     }
     
@@ -26,6 +27,17 @@ class WeatherViewController: UIViewController,UITextFieldDelegate {
     @IBAction func searchPressed(_ sender: UIButton) {
         myTextField.endEditing(true)
     }
+    
+    
+    
+    
+    @IBAction func locationPressed(_ sender: UIButton) {
+    }
+}
+
+//MARK: - UITextFieldDelegate
+
+extension WeatherViewController: UITextFieldDelegate {
     
     // 키보드의 리턴 버튼을 누르면 키보드가 내려가고 textField 값을 return 한다
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -51,14 +63,20 @@ class WeatherViewController: UIViewController,UITextFieldDelegate {
         
         myTextField.text = ""
     }
-    
-    
-    
-    
-    
-    
-    
-    @IBAction func locationPressed(_ sender: UIButton) {
-    }
 }
 
+
+//MARK: - WeatherManagerDelegate
+
+extension WeatherViewController: WeatherManagerDelegate {
+    // WeatherManagerDelegate 안에있는 didUpdateWeather 을 끌어옴으로서 WeatherModel 의 정보를 사용할 수 있게 되었다
+    func didUpdateWeather(weather: WeatherModel) {
+        // WeatherVC 에 보여지기 이전의 작업은 백그라운드 작업이므로 실제 보여지기 위해서는 DispatchQueue 직업이 필요하다
+        DispatchQueue.main.async {
+            self.conditionImageView.image = UIImage(systemName: weather.weatherCondition())
+            self.temperatureLabel.text = weather.tempString
+            self.cityLabel.text = weather.cityName
+        }
+        
+    }
+}

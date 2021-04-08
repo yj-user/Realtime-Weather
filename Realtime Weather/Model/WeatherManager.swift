@@ -7,8 +7,16 @@
 
 import Foundation
 
+protocol WeatherManagerDelegate {
+    func didUpdateWeather(weather: WeatherModel)
+}
+
+
 struct WeatherManager {
     let weatherUrl = "https://api.openweathermap.org/data/2.5/weather?appid=155de75654034a71c7e6b6dd424ee5d5&units=metric"
+    
+    // 어느 class 에서라도 delegate 를 호출하면 didUpdateWeather 를 호출할 수 있다
+    var delegate: WeatherManagerDelegate?
     
     // WeatherVC 에서 키보드가 내려가면 textField 입력값을 전달받아서 urlString 을 완성한다
     func fetchWeather(city: String) {
@@ -31,11 +39,13 @@ struct WeatherManager {
                 if error != nil {
                     return
                 }
-                // data 를 unwrapping 하고 data 를 가져오는데, 내가 원하는 데이터만 뽑아서 가져오도록 하겠다
+                // data 를 unwrapping 하고 data 를 가져오는데, 내가 원하는 데이터만 뽑아서 가져오도록 parseJson 를 호출하겠다
                 if let safeData = data {
-                    // 그래서 JSON 을 읽어오는 함수를 새로 만들어서 수행하는데 unwrapping 한 data 를 제공하겠다
-                    self.parseJson(data: safeData)
-                    
+                    // JSON 으로부터 뽑아온 모든 정보를 weather 로 상수화해서 protocol 에 실어서 weatherVC 로 돌려보내겠다
+                    if let weather = self.parseJson(data: safeData) {
+                        // delegate 를 호출함으로서 프로토콜 안에 있는 didUpdateWeather 함수를 호출하였다 -> WeatherVC 로 보내겠다
+                        self.delegate?.didUpdateWeather(weather: weather)
+                    }
                 }
             }
             // 4. task 를 수행한다
@@ -44,7 +54,7 @@ struct WeatherManager {
     }
     
     // 온라인상의 JSON 사이트에서 원하는 정보를 가져오는데 필요한 데이터는 위에서 받아왔다
-    func parseJson(data: Data) {
+    func parseJson(data: Data) -> WeatherModel? {
         
         // JSON 으로 데이터를 넘겨주고 필요한 정보를 뽑아올때 정보를 해독하는 기능이 필요하므로 JSONDecoder 를 설정한다
         let decoder = JSONDecoder()
@@ -58,12 +68,14 @@ struct WeatherManager {
             let name = decodecData.name
             let temp = decodecData.main.temp
             
-            // WeatherVC 에서 위 항목들이 필요한데 함수 안에 있는 상수는 가져올 수 없으므로 WeatherModel 보냈다
+            // WeatherVC 에서 위 항목들이 필요한데 함수 안에 있는 상수는 가져올 수 없으므로 WeatherModel 로 보냈다
             let weather = WeatherModel(weatherId: id, cityName: name, temperature: temp)
+            // rty 문에는 return 이 필요하다
+            return weather
             
-            print(weather.tempString)
         } catch {
-            
+            // catch 문에도 return 이 필요하다. 에러가 발생하면 아무것도 return 하지 않겠다
+            return nil
         }
         
     }
