@@ -6,6 +6,8 @@
 //
 
 import Foundation
+// 위치정보 관련된 기능을 사용하기 위해 반드시 CoreLocation 을 import 해준다
+import CoreLocation
 
 protocol WeatherManagerDelegate {
     func didUpdateWeather(weather: WeatherModel)
@@ -21,6 +23,14 @@ struct WeatherManager {
     // WeatherVC 에서 키보드가 내려가면 textField 입력값을 전달받아서 urlString 을 완성한다
     func fetchWeather(city: String) {
         let urlString = "\(weatherUrl)&q=\(city)"
+        
+        // 완성한 urlString 을 performRequest 함수에서 사용하도록 url 로 보낸다
+        performRequest(url: urlString)
+    }
+    
+    // 이번에는 입력값이 아니라 현재 위치정보 값을 전달받아서 urlString 을 완성한다
+    func fetchLocation(_ latitude: CLLocationDegrees, _ longitude: CLLocationDegrees) {
+        let urlString = "\(weatherUrl)&lat=\(latitude)&lon=\(longitude)"
         
         // 완성한 urlString 을 performRequest 함수에서 사용하도록 url 로 보낸다
         performRequest(url: urlString)
