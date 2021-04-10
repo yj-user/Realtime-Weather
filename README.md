@@ -9,3 +9,5 @@
 3. 라이트모드, 다크모드에 따라 다른 배경이미지 구현
 
 ![ezgif com-resize](https://user-images.githubusercontent.com/81463008/114172899-43a25b80-9971-11eb-8078-798df737ad85.gif)
+
+![Uploading 스크린샷 2021-04-10 오후 1.27.30.png…]()
