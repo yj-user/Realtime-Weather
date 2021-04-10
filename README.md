@@ -10,6 +10,7 @@
 
 ![ezgif com-resize](https://user-images.githubusercontent.com/81463008/114172899-43a25b80-9971-11eb-8078-798df737ad85.gif)
 
+<img width="312" alt="스크린샷 2021-04-10 오후 1 27 30" src="https://user-images.githubusercontent.com/81463008/114258499-cd9a0500-9a01-11eb-9fb3-0d3fc8867d70.png">
 
 
 <img width="284" alt="스크린샷 2021-04-10 오후 1 27 30" src="https://user-images.githubusercontent.com/81463008/114258447-772cc680-9a01-11eb-80af-c24124b7df4a.png">
