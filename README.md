@@ -10,3 +10,4 @@
 
 ![ezgif com-resize](https://user-images.githubusercontent.com/81463008/114172899-43a25b80-9971-11eb-8078-798df737ad85.gif)
 
+<img width="347" alt="스크린샷 2021-04-10 오후 1 27 30" src="https://user-images.githubusercontent.com/81463008/114258385-1604f300-9a01-11eb-887b-06694cc71324.png">
